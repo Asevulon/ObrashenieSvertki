@@ -67,6 +67,7 @@ BEGIN_MESSAGE_MAP(MyDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDOK, &MyDlg::OnBnClickedOk)
 	ON_WM_TIMER()
+	ON_BN_CLICKED(IDC_STOP, &MyDlg::OnBnClickedStop)
 END_MESSAGE_MAP()
 
 
@@ -82,7 +83,6 @@ BOOL MyDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Мелкий значок
 
 	// TODO: добавьте дополнительную инициализацию
-	o.SetSDrwHWND(GetDlgItem(IDC_PICTURE_SIGNAL)->GetSafeHwnd());
 	o.SetHDrwHWND(GetDlgItem(IDC_PICTURE_H)->GetSafeHwnd());
 	o.SetSVKDrwHWND(GetDlgItem(IDC_PICTURE_SVK)->GetSafeHwnd());
 	o.SetRDrwHWND(GetDlgItem(IDC_PICTURE_RESTORED)->GetSafeHwnd());
@@ -157,25 +157,26 @@ DWORD WINAPI threadfunc(LPVOID in)
 	dlg->InPrcs = true;
 	dlg->o.test();
 	dlg->InPrcs = false;
+	dlg->KillTimer(dlg->timer);
+	dlg->o.queueDrw.clear();
 	double N = dlg->o.GetNev();
 	dlg->Nev.Format(L"%.4f", N);
 	dlg->Nev+= L"%";
-	dlg->Status.Format(L"Звершено! (% d итераций, % d сек)", dlg->o.GetCtr(), dlg->tmr);
+	dlg->Status.Format(L"Звершено! (%d итераций, %.2f  сек)", dlg->o.GetCtr(), dlg->tmr);
 	dlg->UpdateData(FALSE);
+	
 	MessageBeep(0xFFFFFFFF);
-	dlg->KillTimer(dlg->timer);
 	return 0;
 }
 
 
 afx_msg void MyDlg::OnTimer(UINT_PTR idEvent)
 {
-	KillTimer(timer);
 	if (InPrcs)
 	{
-		tmr++;
+		tmr+=TIMER1TIME/1000.;
 		int ctr = o.GetCtr();
-		Status.Format(L"В процессе... (%d итераций, %d сек)", ctr, tmr);
+		Status.Format(L"В процессе... (%d итераций, %.2f сек)", ctr, tmr);
 	}
 	o.NeedToDraw();
 	while (!o.queueDrw.empty())
@@ -184,9 +185,20 @@ afx_msg void MyDlg::OnTimer(UINT_PTR idEvent)
 		o.queueDrw.erase(o.queueDrw.begin());
 	}
 	
-	timer = SetTimer(TIMER1, 1000, NULL);
 	CDialogEx::OnTimer(idEvent);
 	UpdateData(FALSE);
 }
 
 
+
+
+void MyDlg::OnBnClickedStop()
+{
+	if (!InPrcs)return;
+	TerminateThread(thread, 0);
+	Status.Format(L"Прервано! (% d итераций, %.2f сек)", o.GetCtr(), tmr);
+	UpdateData(FALSE);
+	MessageBeep(0xFFFFFFFF);
+	KillTimer(timer);
+
+}

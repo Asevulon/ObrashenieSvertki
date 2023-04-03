@@ -48,7 +48,7 @@ void Drawer::DrawGraph(vector<double> signal, double fd)
 
 	CPen subgrid_pen(PS_DOT, 1, RGB(200, 200, 200));
 	CPen grid_pen(PS_SOLID, 1, RGB(0, 0, 0));
-	CPen data_pen(PS_SOLID, 2, RGB(255, 0, 0));
+	CPen data_pen(PS_SOLID, 2, RGB(200, 100, 0));
 	CFont font;
 	font.CreateFontW(18, 0, 0, 0,
 		FW_DONTCARE,
@@ -148,7 +148,7 @@ void Drawer::DrawSpectr(vector<double> signal, double fd, double SG)
 
 	CPen subgrid_pen(PS_DOT, 1, RGB(200, 200, 200));
 	CPen grid_pen(PS_SOLID, 1, RGB(0, 0, 0));
-	CPen data_pen(PS_SOLID, 2, RGB(255, 0, 0));
+	CPen data_pen(PS_SOLID, 2, RGB(200, 100, 0));
 	CPen sg_pen(PS_SOLID, 2, RGB(0, 175, 0));
 	CFont font;
 	font.CreateFontW(18, 0, 0, 0,
@@ -373,8 +373,8 @@ void Drawer::DrawTwoSignals(vector<double> signal1, vector<double> signal2, doub
 
 	CPen subgrid_pen(PS_DOT, 1, RGB(200, 200, 200));
 	CPen grid_pen(PS_SOLID, 1, RGB(0, 0, 0));
-	CPen data_pen1(PS_SOLID, 3, RGB(200, 0, 0));
-	CPen data_pen2(PS_SOLID, 2, RGB(0, 0, 200));
+	CPen data_pen1(PS_SOLID, 4, RGB(200, 100, 0));
+	CPen data_pen2(PS_SOLID, 2, RGB(0, 100, 200));
 	CFont font;
 	font.CreateFontW(18, 0, 0, 0,
 		FW_DONTCARE,
@@ -478,7 +478,7 @@ void Drawer::DrawTwoSpecters(vector<double> signal1, vector<double> signal2, dou
 
 	CPen subgrid_pen(PS_DOT, 1, RGB(200, 200, 200));
 	CPen grid_pen(PS_SOLID, 1, RGB(0, 0, 0));
-	CPen data_pen1(PS_SOLID, 3, RGB(200, 0, 0));
+	CPen data_pen1(PS_SOLID, 3, RGB(200, 100, 0));
 	CPen data_pen2(PS_SOLID, 2, RGB(0, 0, 200));
 	CPen sg_pen(PS_SOLID, 2, RGB(0, 175, 0));
 	CFont font;
@@ -592,7 +592,7 @@ void Drawer::DrawTwoSpecters(vector<double>& signal1, vector<double>& signal2, d
 
 	CPen subgrid_pen(PS_DOT, 1, RGB(200, 200, 200));
 	CPen grid_pen(PS_SOLID, 1, RGB(0, 0, 0));
-	CPen data_pen1(PS_SOLID, 3, RGB(200, 0, 0));
+	CPen data_pen1(PS_SOLID, 3, RGB(200, 100, 0));
 	CPen data_pen2(PS_SOLID, 2, RGB(0, 0, 200));
 	CFont font;
 	font.CreateFontW(18, 0, 0, 0,
@@ -699,7 +699,7 @@ void Drawer::DrawTwoRoflSpecters(vector<double>& signal1, vector<double>& signal
 
 	CPen subgrid_pen(PS_DOT, 1, RGB(200, 200, 200));
 	CPen grid_pen(PS_SOLID, 1, RGB(0, 0, 0));
-	CPen data_pen1(PS_SOLID, 3, RGB(200, 0, 0));
+	CPen data_pen1(PS_SOLID, 3, RGB(200, 100, 0));
 	CPen data_pen2(PS_SOLID, 2, RGB(0, 0, 200));
 	CFont font;
 	font.CreateFontW(18, 0, 0, 0,
@@ -1076,7 +1076,7 @@ void Drawer::DrawStat(vector<double> stat, double left, double right)
 
 	CPen subgrid_pen(PS_DOT, 1, RGB(200, 200, 200));
 	CPen grid_pen(PS_SOLID, 1, RGB(0, 0, 0));
-	CPen data_pen(PS_SOLID, 2, RGB(255, 0, 0));
+	CPen data_pen(PS_SOLID, 2, RGB(200, 100, 0));
 	CFont font;
 	font.CreateFontW(18, 0, 0, 0,
 		FW_DONTCARE,

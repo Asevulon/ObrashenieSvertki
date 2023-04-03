@@ -12,6 +12,8 @@ Obr::Obr()
 	pres = 0;
 	steplen = 0;
 	IsNeeded = false;
+	srand(time(NULL));
+	log.open("log.txt");
 }
 
 void Obr::SetGParam(gaussParam g1, gaussParam g2, gaussParam g3)
@@ -63,7 +65,7 @@ void Obr::SetRDrwHWND(HWND hWnd)
 }
 void Obr::redraw()
 {
-	sDrw.Redraw();
+	//sDrw.Redraw();
 	svkDrw.Redraw();
 	hDrw.Redraw();
 	rDrw.Redraw();
@@ -153,8 +155,9 @@ vector<double> Obr::Restore(vector<double>lambda)
 void Obr::test()
 {
 	auto signal = CreateSignal(gParam);
+	baseSign = signal;
 	auto svk = CreateSvk(signal, Aimp, Simp);
-	sDrw.DrawGraph(signal, fd);
+	//sDrw.DrawGraph(signal, fd);
 	auto H = CreateH(Aimp, Simp);
 	hDrw.DrawGraph(H, fd);
 	svkDrw.DrawGraph(svk, fd);
@@ -162,7 +165,8 @@ void Obr::test()
 	vector<double>lambda(N, 0.5);
 	MHJ(N, lambda, svk);
 	auto res = Restore(lambda);
-	rDrw.DrawGraph(res, fd);
+	rDrw.DrawTwoSignals(baseSign, res, fd);
+
 	Nev = Nevyazka(lambda, svk);
 
 	double mist = 0;
@@ -198,6 +202,8 @@ void Obr::MHJ(int kk, vector<double>& x, vector<double> yi)
 		ctr++;
 		if (IsNeeded)
 		{
+			log << ctr << '\t' << Nevyazka(x, yi) << endl;
+
 			queueDrw.push_back(x);
 			IsNeeded = false;
 		}
@@ -226,7 +232,7 @@ void Obr::MHJ(int kk, vector<double>& x, vector<double> yi)
 				continue;
 			}
 			
-			k /= 10.;
+			k /= 1000.;
 			if (k < TAU) break;
 			j = 0;
 
@@ -257,7 +263,7 @@ void Obr::MHJ(int kk, vector<double>& x, vector<double> yi)
 double Obr::Nevyazka(vector<double> x, vector<double> y)
 {
 	double res = 0;
-	int size = y.size();
+	/*int size = y.size();
 	for (int i = 0; i < size; i++)
 	{
 		double temp = y[i];
@@ -272,7 +278,14 @@ double Obr::Nevyazka(vector<double> x, vector<double> y)
 			temp += -h((i - k) / fd, Aimp, Simp) * tempk;
 		}
 		res += temp * temp;
+	}*/
+	auto rx = Restore(x);
+	auto svk = CreateSvk(rx, Aimp, Simp);
+	for (int i = 0; i < rx.size(); i++)
+	{
+		res += (y[i] - svk[i]) * (y[i] - svk[i]);
 	}
+
 	return res;
 }
 
@@ -281,7 +294,7 @@ double Obr::Nevyazka(vector<double> x, vector<double> y)
 void Obr::restDrw(vector<double>x)
 {
 	auto res = Restore(x);
-	rDrw.DrawGraph(res, fd);
+	rDrw.DrawTwoSignals(baseSign, res, fd);
 }
 
 

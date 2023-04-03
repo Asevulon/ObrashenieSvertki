@@ -2,7 +2,9 @@
 
 #include"Drawer.h"
 
-
+#include<time.h>
+#include<random>
+#include<fstream>
 
 
 struct gaussParam
@@ -33,10 +35,13 @@ private:
 	double steplen;
 	bool IsNeeded;
 	int ctr;
+	vector<double>baseSign;
 	Drawer sDrw;
 	Drawer hDrw;
 	Drawer svkDrw;
 	Drawer rDrw;
+
+	ofstream log;
 protected:
 	vector<double> CreateSignal(gaussParam*gPar);
 	double S(gaussParam* gPar, double t);
