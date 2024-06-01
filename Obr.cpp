@@ -171,9 +171,15 @@ void Obr::test()
 
 	Nev = Nevyazka(lambda, svk);
 
-	double mist = 0;
-	for (auto& item : signal)mist += item * item;
-	Nev = 100. * Nev / mist;
+	TotalSignalMistake = 0;
+	for (int i = 0; i < N; i++)
+	{
+		double TempMistake = signal[i] - res[i];
+		TempMistake *= TempMistake;
+		TotalSignalMistake += TempMistake;
+	}
+	TotalSignalMistake = sqrt(TotalSignalMistake);
+	TotalSignalMistake /= N;
 }
 
 
@@ -297,6 +303,11 @@ void Obr::restDrw(vector<double>x)
 	rDrw.DrawTwoSignals(baseSign, res, fd);
 	auto svk = CreateSvk(res, Aimp, Simp);
 	svkDrw.DrawTwoSignals(baseSvk, svk, fd);
+}
+
+double Obr::GetTotalSignalMistake()
+{
+	return TotalSignalMistake;
 }
 
 

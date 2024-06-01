@@ -43,6 +43,9 @@ private:
 	Drawer rDrw;
 
 	ofstream log;
+
+
+	double TotalSignalMistake = 0;
 protected:
 	vector<double> CreateSignal(gaussParam*gPar);
 	double S(gaussParam* gPar, double t);
@@ -75,4 +78,6 @@ public:
 
 	vector<vector<double>>queueDrw;
 	void restDrw(vector<double>x);
+
+	double GetTotalSignalMistake();
 };

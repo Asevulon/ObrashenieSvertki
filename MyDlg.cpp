@@ -62,6 +62,7 @@ void MyDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT17, Status);
 	DDX_Control(pDX, IDC_EDIT17, StatusTextEdit);
 	DDX_Control(pDX, IDC_EDIT14, NevTextCtrl);
+	DDX_Control(pDX, IDC_EDIT18, TotalSignalMistakeText);
 }
 
 BEGIN_MESSAGE_MAP(MyDlg, CDialogEx)
@@ -163,11 +164,15 @@ DWORD WINAPI threadfunc(LPVOID in)
 	dlg->KillTimer(dlg->timer);
 	dlg->o.queueDrw.clear();
 	double N = dlg->o.GetNev();
-	dlg->Nev.Format(L"%.4f", N);
-	dlg->Nev+= L"%";
+	dlg->Nev.Format(L"%.6f", N);
 	dlg->NevTextCtrl.SetWindowTextW(dlg->Nev);
 	dlg->Status.Format(L"Звершено! (%d итераций, %.2f  сек)", dlg->o.GetCtr(), (clock()-dlg->StartTime)/1000.);
 	dlg->StatusTextEdit.SetWindowTextW(dlg->Status);
+
+	double mist = dlg->o.GetTotalSignalMistake();
+	CString smist;
+	smist.Format(L"%.6f", mist);
+	dlg->TotalSignalMistakeText.SetWindowTextW(smist);
 	return 0;
 }
 

@@ -63,6 +63,7 @@ public:
 	float StartTime;
 	CEdit StatusTextEdit;
 	CEdit NevTextCtrl;
+	CEdit TotalSignalMistakeText;
 };
 
 DWORD WINAPI threadfunc(LPVOID);
