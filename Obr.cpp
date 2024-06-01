@@ -12,7 +12,6 @@ Obr::Obr()
 	pres = 0;
 	steplen = 0;
 	IsNeeded = false;
-	srand(time(NULL));
 	log.open("log.txt");
 }
 
@@ -154,9 +153,12 @@ vector<double> Obr::Restore(vector<double>lambda)
 
 void Obr::test()
 {
+	srand(time(NULL));
+
 	auto signal = CreateSignal(gParam);
 	baseSign = signal;
 	auto svk = CreateSvk(signal, Aimp, Simp);
+	baseSvk = svk;
 	//sDrw.DrawGraph(signal, fd);
 	auto H = CreateH(Aimp, Simp);
 	hDrw.DrawGraph(H, fd);
@@ -202,8 +204,6 @@ void Obr::MHJ(int kk, vector<double>& x, vector<double> yi)
 		ctr++;
 		if (IsNeeded)
 		{
-			log << ctr << '\t' << Nevyazka(x, yi) << endl;
-
 			queueDrw.push_back(x);
 			IsNeeded = false;
 		}
@@ -232,7 +232,7 @@ void Obr::MHJ(int kk, vector<double>& x, vector<double> yi)
 				continue;
 			}
 			
-			k /= 1000.;
+			k /= 10.;
 			if (k < TAU) break;
 			j = 0;
 
@@ -295,6 +295,8 @@ void Obr::restDrw(vector<double>x)
 {
 	auto res = Restore(x);
 	rDrw.DrawTwoSignals(baseSign, res, fd);
+	auto svk = CreateSvk(res, Aimp, Simp);
+	svkDrw.DrawTwoSignals(baseSvk, svk, fd);
 }
 
 

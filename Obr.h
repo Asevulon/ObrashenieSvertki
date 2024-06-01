@@ -36,6 +36,7 @@ private:
 	bool IsNeeded;
 	int ctr;
 	vector<double>baseSign;
+	vector<double>baseSvk;
 	Drawer sDrw;
 	Drawer hDrw;
 	Drawer svkDrw;

@@ -7,7 +7,7 @@
 #include"Obr.h"
 
 #define TIMER1 1
-#define TIMER1TIME 500
+#define TIMER1TIME 750
 
 // Диалоговое окно MyDlg
 class MyDlg : public CDialogEx
@@ -60,6 +60,8 @@ public:
 	float tmr;
 	bool InPrcs;
 	afx_msg void OnBnClickedStop();
+	float StartTime;
+	CEdit StatusTextEdit;
 };
 
 DWORD WINAPI threadfunc(LPVOID);

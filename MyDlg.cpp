@@ -37,7 +37,7 @@ MyDlg::MyDlg(CWnd* pParent /*=nullptr*/)
 	, pr(1e-6)
 	, Status(_T(""))
 {
-	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+	m_hIcon = AfxGetApp()->LoadIconW(IDR_MAINFRAME);
 }
 
 void MyDlg::DoDataExchange(CDataExchange* pDX)
@@ -60,6 +60,7 @@ void MyDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT16, sl);
 	DDX_Text(pDX, IDC_EDIT15, pr);
 	DDX_Text(pDX, IDC_EDIT17, Status);
+	DDX_Control(pDX, IDC_EDIT17, StatusTextEdit);
 }
 
 BEGIN_MESSAGE_MAP(MyDlg, CDialogEx)
@@ -155,6 +156,7 @@ DWORD WINAPI threadfunc(LPVOID in)
 {
 	MyDlg* dlg = (MyDlg*) in;
 	dlg->InPrcs = true;
+	dlg->StartTime = clock();
 	dlg->o.test();
 	dlg->InPrcs = false;
 	dlg->KillTimer(dlg->timer);
@@ -162,10 +164,8 @@ DWORD WINAPI threadfunc(LPVOID in)
 	double N = dlg->o.GetNev();
 	dlg->Nev.Format(L"%.4f", N);
 	dlg->Nev+= L"%";
-	dlg->Status.Format(L"Звершено! (%d итераций, %.2f  сек)", dlg->o.GetCtr(), dlg->tmr);
-	dlg->UpdateData(FALSE);
-	
-	MessageBeep(0xFFFFFFFF);
+	dlg->Status.Format(L"Звершено! (%d итераций, %.2f  сек)", dlg->o.GetCtr(), (clock()-dlg->StartTime)/1000.);
+	dlg->StatusTextEdit.SetWindowTextW(dlg->Status);
 	return 0;
 }
 
@@ -174,9 +174,8 @@ afx_msg void MyDlg::OnTimer(UINT_PTR idEvent)
 {
 	if (InPrcs)
 	{
-		tmr+=TIMER1TIME/1000.;
 		int ctr = o.GetCtr();
-		Status.Format(L"В процессе... (%d итераций, %.2f сек)", ctr, tmr);
+		Status.Format(L"В процессе... (%d итераций, %.2f сек)", ctr, (clock() - StartTime) / 1000.);
 	}
 	o.NeedToDraw();
 	while (!o.queueDrw.empty())
@@ -196,9 +195,8 @@ void MyDlg::OnBnClickedStop()
 {
 	if (!InPrcs)return;
 	TerminateThread(thread, 0);
-	Status.Format(L"Прервано! (% d итераций, %.2f сек)", o.GetCtr(), tmr);
+	Status.Format(L"Прервано! (% d итераций, %.2f сек)", o.GetCtr(), (clock() - StartTime) / 1000.);
 	UpdateData(FALSE);
-	MessageBeep(0xFFFFFFFF);
 	KillTimer(timer);
 
 }
