@@ -61,6 +61,7 @@ void MyDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT15, pr);
 	DDX_Text(pDX, IDC_EDIT17, Status);
 	DDX_Control(pDX, IDC_EDIT17, StatusTextEdit);
+	DDX_Control(pDX, IDC_EDIT14, NevTextCtrl);
 }
 
 BEGIN_MESSAGE_MAP(MyDlg, CDialogEx)
@@ -164,6 +165,7 @@ DWORD WINAPI threadfunc(LPVOID in)
 	double N = dlg->o.GetNev();
 	dlg->Nev.Format(L"%.4f", N);
 	dlg->Nev+= L"%";
+	dlg->NevTextCtrl.SetWindowTextW(dlg->Nev);
 	dlg->Status.Format(L"Звершено! (%d итераций, %.2f  сек)", dlg->o.GetCtr(), (clock()-dlg->StartTime)/1000.);
 	dlg->StatusTextEdit.SetWindowTextW(dlg->Status);
 	return 0;

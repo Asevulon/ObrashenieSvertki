@@ -62,6 +62,7 @@ public:
 	afx_msg void OnBnClickedStop();
 	float StartTime;
 	CEdit StatusTextEdit;
+	CEdit NevTextCtrl;
 };
 
 DWORD WINAPI threadfunc(LPVOID);
